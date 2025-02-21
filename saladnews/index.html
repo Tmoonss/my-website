@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Salad Buah Segar</title>
+  <!-- Google Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Animate.css untuk animasi tambahan (opsional) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Global */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      color: #333;
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      padding: 60px 0;
+    }
+    
+    /* Navbar dengan latar belakang transparan dan efek hover */
+    .navbar {
+      background: transparent;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+    .navbar-brand,
+    .nav-link {
+      color: #fff !important;
+      transition: transform 0.3s ease, color 0.3s ease;
+      position: relative;
+      display: inline-block;
+    }
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #fe6704; /* Ganti dengan #9cc90a jika diinginkan */
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover {
+      transform: scale(1.1);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .navbar-brand img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    /* Hero Section dengan Slider Otomatis */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* Carousel sebagai background slider */
+    #heroCarousel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #heroCarousel .carousel-inner,
+    #heroCarousel .carousel-item {
+      height: 100%;
+    }
+    #heroCarousel .carousel-item {
+      background-position: center;
+      background-size: cover;
+    }
+    /* Menghilangkan indikator & kontrol */
+    #heroCarousel .carousel-indicators,
+    #heroCarousel .carousel-control-prev,
+    #heroCarousel .carousel-control-next {
+      display: none;
+    }
+    /* Overlay gelap agar teks lebih terbaca */
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+    /* Teks overlay yang statis di tengah layar */
+    .hero-content {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      padding: 0 15px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .hero-content h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    .btn-primary {
+      background-color: #fe6704;
+      border: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #e85e00;
+      transform: scale(1.05);
+    }
+
+    /* Wave Divider di bawah Hero */
+    .hero-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      z-index: 2;
+    }
+    .hero-wave svg {
+      display: block;
+      width: 100%;
+      height: 100px;
+    }
+
+    /* Produk Cards */
+    .card {
+      border: none;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .card-img-top {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-img-top {
+      transform: scale(1.05);
+    }
+    .card-body {
+      padding: 1rem;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .card-text {
+      margin-bottom: 1rem;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .pagination .page-item {
+      margin: 0 5px;
+    }
+    .pagination .page-link {
+      color: #9cc90a;
+      border: 1px solid #9cc90a;
+      background-color: transparent;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .pagination .page-link:hover {
+      background-color: #9cc90a;
+      color: #fff;
+    }
+    .pagination .page-item.active .page-link {
+      background-color: #9cc90a;
+      color: #fff;
+      border-color: #9cc90a;
+    }
+
+    /* Contact Form & Map */
+    #contact iframe {
+      border: 0;
+      border-radius: 8px;
+    }
+
+    /* Styling khusus untuk Form Pengaduan */
+    #contactForm {
+      max-width: 50%;
+      margin: 0 auto;
+      background-color: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    #contactForm label {
+      font-weight: 500;
+    }
+    #contactForm input,
+    #contactForm textarea {
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease;
+    }
+    #contactForm input:focus,
+    #contactForm textarea:focus {
+      border-color: #fe6704;
+      box-shadow: 0 0 5px rgba(254,103,4,0.5);
+    }
+    @media (max-width: 768px) {
+      #contactForm {
+        max-width: 90%;
+      }
+    }
+
+    /* Sosmed dan Kontak */
+    .sosmed-kontak {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sosmed-kontak a {
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .sosmed-kontak a:hover {
+      color: #9cc90a;
+    }
+    .sosmed-kontak i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #9cc90a;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    /* Responsif tambahan untuk hero teks */
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#home">
+        <!-- Ganti src dengan logo asli Anda -->
+        <img src="assets/img/logo.png" alt="Logo Salad Buah" loading="lazy"/>
+        Salad <span class="text-warning">18</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#produk">Produk</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section dengan Slider Otomatis -->
+  <section id="home" class="hero">
+    <!-- Carousel sebagai background slider -->
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('assets/img/hero1.jpg');"></div>
+        <div class="carousel-item" style="background-image: url('assets/img/hero3.jpg');"></div>
+        <div class="carousel-item" style="background-image: url('assets/img/hero2.jpg');"></div>
+      </div>
+    </div>
+    <!-- Overlay gelap -->
+    <div class="hero-overlay"></div>
+    <!-- Teks overlay statis di tengah -->
+    <div class="hero-content">
+      <h1 class="display-4">Selamat Datang di Salad Buah Segar</h1>
+      <p class="lead">Nikmati kelezatan buah alami dengan cita rasa yang menyegarkan.</p>
+      <a href="#produk" class="btn btn-primary btn-lg">Lihat Produk</a>
+    </div>
+    <!-- Wave Divider di bagian bawah hero -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="#9cc90a" fill-opacity="0.6" d="M0,256L48,229.3C96,203,192,149,288,128C384,107,480,117,576,138.7C672,160,768,192,864,186.7C960,181,1056,139,1152,133.3C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- About Us Section -->
+  <section id="about" style="background-color: #f8f9fa; padding: 80px 0;">
+    <div class="container text-center">
+      <h2 class="mb-4" style="color: #9cc90a; font-weight: 600;">Tentang Kami</h2>
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <img src="assets/img/about.png" class="img-fluid rounded shadow" alt="Tentang Kami">
+        </div>
+        <div class="col-lg-6 text-start">
+          <p class="lead" style="color: #333; font-weight: 400;">
+            Kami adalah penyedia salad buah segar yang selalu mengutamakan kualitas dan kesehatan.
+            Setiap buah dipilih dengan cermat untuk menyajikan cita rasa alami yang menyehatkan.
+          </p>
+          <p style="color: #555;">
+            Kami menggunakan buah-buahan segar pilihan dengan dressing sehat yang dibuat tanpa bahan pengawet.
+            Komitmen kami adalah memberikan pengalaman rasa terbaik untuk Anda dengan bahan alami terbaik.
+          </p>
+          <a href="#produk" class="btn btn-success btn-lg" style="background-color: #9cc90a; border: none;">Lihat Produk Kami</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Produk Section dengan Kategori & Pagination -->
+  <section id="produk" class="bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">Produk Kami</h2>
+      <!-- Filter Kategori -->
+      <div class="d-flex flex-wrap justify-content-center mb-4" id="filterKategori">
+        <button class="btn btn-outline-secondary m-1 kategori-btn active" data-kategori="Semua">Semua</button>
+        <button class="btn btn-outline-secondary m-1 kategori-btn" data-kategori="Tropis">Tropis</button>
+        <button class="btn btn-outline-secondary m-1 kategori-btn" data-kategori="Organik">Organik</button>
+        <button class="btn btn-outline-secondary m-1 kategori-btn" data-kategori="Premium">Premium</button>
+        <button class="btn btn-outline-secondary m-1 kategori-btn" data-kategori="Eksotis">Eksotis</button>
+      </div>
+      <!-- Grid Produk -->
+      <div id="produkContainer" class="row">
+        <!-- Produk akan dimuat di sini -->
+      </div>
+      <!-- Pagination -->
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4" id="pagination">
+          <!-- Pagination akan di-generate oleh JavaScript -->
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Contact Section dengan Form Pengaduan, Map, dan Sosmed -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="text-center mb-4">Contact Us</h2>
+
+      <!-- Form Pengaduan -->
+      <div class="mb-5">
+        <h3 class="text-center mb-4">Form Pengaduan</h3>
+        <form id="contactForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nama</label>
+            <input type="text" class="form-control" id="name" placeholder="Nama Anda" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Email Anda" required>
+          </div>
+          <div class="mb-3">
+            <label for="message" class="form-label">Pesan</label>
+            <textarea class="form-control" id="message" rows="4" placeholder="Pesan Anda" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+        </form>
+        <div id="formResponse" class="mt-3"></div>
+      </div>
+
+      <!-- Div dengan Map dan Sosmed -->
+      <div class="row">
+        <!-- Kolom Map -->
+        <div class="col-md-6 mb-4">
+          <div class="ratio ratio-4x3">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31693.732264560517!2d106.68595075!3d-6.2087631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3d9f0b9efb1%3A0xb4b2e2e20d1ed2a7!2sJakarta%20Pusat%2C%20Indonesia!5e0!3m2!1sen!2sus!4v1687939933525!5m2!1sen!2sus" 
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+        <!-- Kolom Sosmed dan Kontak -->
+        <div class="col-md-6 mb-4">
+          <div class="sosmed-kontak">
+            <h3 class="mb-4">Hubungi Kami</h3>
+            <p><i class="fas fa-phone"></i> +62 123 4567 890</p>
+            <p><i class="fas fa-envelope"></i> info@saladbuahsegar.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> Jakarta Pusat, Indonesia</p>
+            <div class="mt-3">
+              <a href="#" class="text-decoration-none"><i class="fab fa-facebook"></i> Facebook</a>
+            </div>
+            <div>
+              <a href="#" class="text-decoration-none"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+            <div>
+              <a href="#" class="text-decoration-none"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Salad Buah Segar. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JavaScript (Smooth Scrolling, Filtering, Pagination & Form Handling) -->
+  <script>
+    // Data Produk dengan kategori
+    const produkData = [
+      { img: 'assets/img/produk/Ricebox.jpg', title: 'Salad Buah Tropis', desc: 'Campuran buah tropis segar dengan dressing sehat.', category: 'Tropis' },
+      { img: 'assets/img/produk/Healthy Cendol.jpg', title: 'Salad Buah Organik', desc: 'Hanya menggunakan buah organik pilihan untuk rasa yang alami.', category: 'Organik' },
+      { img: 'assets/img/produk/Mango Sago.jpg', title: 'Salad Buah Premium', desc: 'Kombinasi buah premium untuk momen istimewa Anda.', category: 'Premium' },
+      { img: 'assets/img/produk/produk4.jpg', title: 'Salad Buah Eksotis', desc: 'Pilihan buah eksotis dengan cita rasa unik.', category: 'Eksotis' },
+      { img: 'assets/img/produk/produk5.jpg', title: 'Salad Buah Tropis', desc: 'Campuran buah tropis segar dengan dressing sehat.', category: 'Tropis' },
+      { img: 'assets/img/produk/produk6.jpg', title: 'Salad Buah Organik', desc: 'Hanya menggunakan buah organik pilihan untuk rasa yang alami.', category: 'Organik' },
+      { img: 'assets/img/produk/produk7.jpg', title: 'Salad Buah Premium', desc: 'Kombinasi buah premium untuk momen istimewa Anda.', category: 'Premium' },
+      { img: 'assets/img/produk/produk8.jpg', title: 'Salad Buah Eksotis', desc: 'Pilihan buah eksotis dengan cita rasa unik.', category: 'Eksotis' },
+      { img: 'assets/img/produk/produk9.jpg', title: 'Salad Buah Tropis', desc: 'Campuran buah tropis segar dengan dressing sehat.', category: 'Tropis' },
+      { img: 'assets/img/produk/produk10.jpg', title: 'Salad Buah Organik', desc: 'Hanya menggunakan buah organik pilihan untuk rasa yang alami.', category: 'Organik' },
+      { img: 'assets/img/produk/produk11.jpg', title: 'Salad Buah Premium', desc: 'Kombinasi buah premium untuk momen istimewa Anda.', category: 'Premium' },
+      { img: 'assets/img/produk/produk12.jpg', title: 'Salad Buah Eksotis', desc: 'Pilihan buah eksotis dengan cita rasa unik.', category: 'Eksotis' }
+    ];
+
+    // Variabel global untuk filter dan pagination
+    let currentCategory = 'Semua';
+    let filteredProduk = produkData;
+    const produkPerHalaman = 3;
+    let currentPage = 1;
+
+    // Fungsi untuk menampilkan produk sesuai halaman
+    function tampilkanProduk(halaman) {
+      currentPage = halaman;
+      const produkContainer = document.getElementById('produkContainer');
+      produkContainer.innerHTML = ''; // Kosongkan kontainer produk
+
+      const startIndex = (halaman - 1) * produkPerHalaman;
+      const endIndex = startIndex + produkPerHalaman;
+
+      filteredProduk.slice(startIndex, endIndex).forEach(produk => {
+        const col = document.createElement('div');
+        col.className = 'col-md-4 mb-4';
+        col.innerHTML = `
+          <div class="card">
+            <img src="${produk.img}" class="card-img-top" alt="${produk.title}">
+            <div class="card-body">
+              <h5 class="card-title">${produk.title}</h5>
+              <p class="card-text">${produk.desc}</p>
+            </div>
+          </div>
+        `;
+        produkContainer.appendChild(col);
+      });
+
+      // Scroll ke bagian produk saat mengganti halaman
+      document.getElementById('produk').scrollIntoView({ behavior: 'smooth' });
+      buatPagination();
+    }
+
+    // Fungsi untuk membuat pagination sesuai jumlah produk yang difilter
+    function buatPagination() {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+      const totalHalaman = Math.ceil(filteredProduk.length / produkPerHalaman);
+
+      for (let i = 1; i <= totalHalaman; i++) {
+        const li = document.createElement('li');
+        li.className = 'page-item' + (i === currentPage ? ' active' : '');
+        li.innerHTML = `<a class="page-link" href="#" onclick="tampilkanProduk(${i}); return false;">${i}</a>`;
+        pagination.appendChild(li);
+      }
+    }
+
+    // Fungsi untuk menerapkan filter berdasarkan kategori
+    function filterProduk(kategori) {
+      currentCategory = kategori;
+      if (kategori === 'Semua') {
+        filteredProduk = produkData;
+      } else {
+        filteredProduk = produkData.filter(produk => produk.category === kategori);
+      }
+      // Reset ke halaman 1
+      tampilkanProduk(1);
+    }
+
+    // Event listener untuk tombol filter kategori
+    document.querySelectorAll('.kategori-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Hilangkan class active pada semua tombol
+        document.querySelectorAll('.kategori-btn').forEach(b => b.classList.remove('active'));
+        // Tambahkan class active ke tombol yang diklik
+        this.classList.add('active');
+        // Terapkan filter
+        filterProduk(this.getAttribute('data-kategori'));
+      });
+    });
+
+    // Inisialisasi tampilan produk (default: kategori Semua, halaman 1)
+    window.addEventListener('load', () => {
+      filterProduk('Semua');
+    });
+
+    // Smooth scrolling untuk navigasi
+    document.querySelectorAll('a.nav-link, a.btn').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if (this.hash !== "") {
+          e.preventDefault();
+          const hash = this.hash;
+          document.querySelector(hash).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Handling sederhana untuk form contact
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      document.getElementById('formResponse').innerHTML = 
+        '<div class="alert alert-success">Terima kasih, ' + name + '! Pesan Anda telah terkirim.</div>';
+      this.reset();
+    });
+
+    window.addEventListener("scroll", function () {
+  let navbar = document.querySelector(".navbar");
+  if (window.scrollY > 50) {
+    navbar.style.backgroundColor = "#9cc90a";
+    navbar.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+  } else {
+    navbar.style.backgroundColor = "transparent";
+    navbar.style.boxShadow = "none";
+  }
+});
+
+
+  </script>
+</body>
+</html>
